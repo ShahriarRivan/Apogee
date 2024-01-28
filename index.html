@@ -1,0 +1,357 @@
+
+<!DOCTYPE html>
+<html lang="en"> 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>APOGEE</title>
+    <link href="images/favicon.png" rel="icon">
+    <link href="images/apple-touch-icon.png" rel="apple-touch-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&family=Outfit:wght@400;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@100;200;300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Koulen&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Homenaje&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alumni+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<!-- 640h, 560h, 280w, 320w -->
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="loginCont" class="login-container hidden">
+    <div class="logoNameCont">
+        <img class="whiteLogo" src="images/whiteLogo.png" alt="">
+        <img class="whiteLogoTxt" src="images/WhiteLogoTxt.png" alt="">
+    </div>
+
+
+    <div id="errorDiv" class="error-message">Error message will appear here</div>
+
+
+
+
+
+    <div class="loginSignupCard1">
+        <div id="loginCardid" class="loginCard">
+            <input class="inoutFieldsLogonSing" type="email" id="email" placeholder="Email">
+            <input class="inoutFieldsLogonSing" type="password" id="password" placeholder="Password">
+            <button id="login" class="loginSignupBtn">LOGIN</button>
+            
+        </div>
+        <div id="signupCardid" class="signupCard hidden">
+            <input class="inoutFieldsLogonSing" type="text" id="name" placeholder="Name">
+            <input class="inoutFieldsLogonSing" type="email" id="semail" placeholder="Email">
+            <input class="inoutFieldsLogonSing" type="password" id="spassword" placeholder="Password">
+            <button id="signup" class="loginSignupBtn">SIGNUP</button>
+        </div>
+        <div class="switchBtnCont">
+            <button class="switchBtn" id="signupLoginCardToggle">SIGNUP</button>
+        </div>
+    </div>
+</div>
+
+<div class="landingPageBiggerScreen">
+
+</div>
+
+<div id="loggedinCont" class="content-container hidden">
+    <div class="todayViewMainSection">
+
+
+<!-- magane food popup========================================== -->
+                        <div id="addFoodForm" class="addFoodPopup hidden">
+                            <p class="addnewitmTxt">ADD NEW ITEM</p>
+                            <div class="manageItemsItems">
+                                <input class="inputFields" type="text" id="newFoodName" placeholder="Food Name">
+                                <input class="inputFields" type="number" id="newCaloriesPerGram" placeholder="Calories/g">
+                                <input class="inputFields" type="number" id="newProteinPerGram" placeholder="Protein/g">
+                                <button class="inputFields addBtnMng" id="submitNewFood">ADD</button>
+                            </div>
+                            
+
+                            <p class="addnewitmTxt" style="margin-top: 30px;">MANAGE ITEMS</p>
+                            <div class="manageFoodScrldiv" id="manageFoodScrldivID">
+                                <div id="existingFoodItemsList" class="existingfditemlist"> </div>
+                            </div>
+
+                            <button id="cancelNewFood" class="cancelbtManageFood">DONE</button>
+                        </div>
+<!-- manage food pupup ends===================================== -->
+
+
+
+
+
+            <div class="topSec1">
+                <img id="settingsDiv" src="images/menuIcon.png" alt="">
+               
+                <div id="settingsCont" class="hidden">
+                    <span id="userName" class="username">--</span>
+                    <div class="themeChange">
+                        LIGHT
+                    </div>
+                    <div class="signOutDivCont">
+                        <button id="signOut" class="signOutBtn">SIGNOUT</button>
+                    </div>
+                </div>
+
+
+                <div class="topSec1Week">
+                   <p>WEEK <span id="weekSS">--</span></p>
+                </div>
+                <div  class="topSec1Day">
+                    <p>DAY <span id="daysSS">--</span></p>
+                </div>
+                <button  class="topSec1Prog" id="openSetGoals">
+                    <p class="topSec1ProgP">PROGRESS <span id="progPercentage">--</span> %</p>
+                </button>
+            </div>
+
+            <div class="topSec2">
+                <div class="topSec2TodayChart">
+                    <div class="todayNdYesTxt">
+                        TODAY
+                    </div>
+                    <div class="chartCont">
+                        <div class="barContainer">
+                            <span id="todaysCalories">--</span>
+                            <div class="theActualProgressBar">
+                                <div class="progress" id="calorieProgress"></div>
+                            </div>
+                            CALORIE
+                        </div>
+                        <div class="barContainer">
+                            <span id="todaysProtein">--</span>
+                            <div class="theActualProgressBar">
+                                <div class="progress" id="proteinProgress"></div>
+                            </div>
+                            PROTEIN
+                        </div>
+                    </div>
+                </div>
+                <div class="topSec2YesterdayChart">
+                    <div class="todayNdYesTxt">
+                        YESTERDAY
+                    </div>
+                    <div class="chartCont">
+                        <div class="barContainer">
+                            <span id="yesterdaysCalories">--</span>
+                            <div class="theActualProgressBar">
+                                <div class="progress" id="YstrdcalorieProgress"></div>
+                            </div>
+                            CALORIE
+                        </div>
+                        <div class="barContainer">
+                            <span id="yesterdaysProtein">--</span>
+                            <div class="theActualProgressBar">
+                                <div class="progress" id="YstrdproteinProgress"></div>
+                            </div>
+                            PROTEIN
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            
+            <div class="topSec3">
+                <div class="topSec3InputSec">
+                    <select id="foodItemDropdown" class="foodDropdown">
+                        <option value="">SELECT ITEM</option>
+
+                         <option value="addNewItem">Add New Item</option>
+                    </select>
+                    <input type="number" class="FoodAmountInput" placeholder="GRAMS" id="foodAmount">
+                    <button id="addFood" class="AddBtn" >ADD</button>
+                </div>
+            </div>
+    </div>
+
+
+    <div class="OtherServicesMidButtonSection" id="midButtonsCont">
+        <div class="midButtonsCont">
+            <div class="buttonHighlight"></div> 
+            <div class="midButton" id="button1">BMR CALC</div>
+            <div class="midButton" id="button2">STATS</div>
+            <div class="midButton" id="button3">DATA</div>
+        </div>
+    </div>
+
+
+    <div id="canv" class="OtherServicesBottomViewSection">
+            <div id="content1" class="content">Content for BMR CALC<br>coming soon</div>
+
+
+
+
+
+            <div id="content2" class="content stats hidden">
+                <div class="weightStats">
+                    <span class="txtWeights">WEIGHT<br> 
+                        <span class="txtstartWt">CURRENT WEIGHT <span id="wttrgt" >--</span> LBS</span>
+                    </span>
+                    
+                    <span class="txtSincelst"><br><br>SINCE LAST UPDATE<br>
+                        <span><span id="wtChangeSinceLastUpdate" class="WtChngNumbers">--</span>LBS</span> 
+                    </span>
+                    
+                    <span class="txtSincelst">TILL DATE<br>
+                        <span><span id="wtChngSinceDayOne" class="WtChngNumbers">--</span>LBS</span> 
+                    </span>
+                </div>
+                <div class="nutritionNdGraphStats">
+                    <div class="avgNutri">
+                        <div class="NutriTxt1">
+                            <!-- <span style="color: rgba(240, 248, 255, 0);">-<br>-<br><br></span> -->
+                            <span style="color: rgba(240, 248, 255, 0);">--<br><br></span>
+                            <span>SUGGESTED<br>FOR TODAY<br><br></span>
+                            <span>AVG PER DAY<br>TILL DATE<br><br></span>
+                            <span>AVG PER DAY<br>LAST 6 DAYS</span>
+                            <!-- <span> SUGGESTED<br>FOR TOMORROW</span> -->
+                        </div>
+                        <div class="NutriTxt2">
+                            <span>CALORIE<br></span>
+                            <span id="suggCal" class="nutriNums">--<br><br></span>
+                            <span id="AvgCalPday" class="nutriNums">--<br><br></span>
+                            <span id="AvgCal6day" class="nutriNums">--</span>
+                        </div>
+                        <div class="NutriTxt3">
+                            <span>PROTEIN<br></span>
+                            <span id="suggPro" class="nutriNums">--<br><br></span>
+                            <span id="AvgPrtPday" class="nutriNums">--<br><br></span>
+                            <span id="AvgPrt6day" class="nutriNums">--</span>
+                        </div>
+                    </div>
+                    <div class="chartNutri">
+                        <div class="chartNutriCHILD">
+                            
+                            <div class="GraphPairCont">
+                                <div class="theActualProgressBarGraph">
+                                    <div id="calorie1" class="progress"></div>
+                                </div>
+                                <div class="theActualProgressBarGraph">
+                                    <div  id="protein1" class="progress"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="GraphPairCont">
+                                <div class="theActualProgressBarGraph">
+                                    <div id="calorie2" class="progress"></div>
+                                </div>
+                                <div class="theActualProgressBarGraph">
+                                    <div  id="protein2" class="progress"></div>
+                                </div>
+                            </div>
+
+                            <div class="GraphPairCont">
+                                <div class="theActualProgressBarGraph">
+                                    <div id="calorie3" class="progress"></div>
+                                </div>
+                                <div class="theActualProgressBarGraph">
+                                    <div  id="protein3" class="progress"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="GraphPairCont">
+                                <div class="theActualProgressBarGraph">
+                                    <div id="calorie4" class="progress"></div>
+                                </div>
+                                <div class="theActualProgressBarGraph">
+                                    <div  id="protein4" class="progress"></div>
+                                </div>
+                            </div>
+
+                            <div class="GraphPairCont">
+                                <div class="theActualProgressBarGraph">
+                                    <div id="calorie5" class="progress"></div>
+                                </div>
+                                <div class="theActualProgressBarGraph">
+                                    <div  id="protein5" class="progress"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="GraphPairCont">
+                                <div class="theActualProgressBarGraph">
+                                    <div id="calorie6" class="progress"></div>
+                                </div>
+                                <div class="theActualProgressBarGraph">
+                                    <div  id="protein6" class="progress"></div>
+                                </div>
+                            </div>
+
+                            <div class="chartNutriCHILDTop"></div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div id="content3" class="content hidden">Content for DATA<br>coming soon</div>
+
+    </div>
+
+</div> <!-- main container ends -->
+
+
+
+<!-- ======================================== set goals popup ======================================== -->
+
+                    <div id="setGoalsForm" class="setGoalsPopup hidden"> 
+                        <!-- <div class="targetSetPopupCloseCont">
+                            <button id="cancelGoals" class="TrgtCloseBtn">x</button>
+                        </div> -->
+                        <div class="setGoalsPopupFirstChild">
+                            <div class="targetSetPopupCloseCont">
+                                <button id="cancelGoals" class="TrgtCloseBtn">x</button>
+                            </div>
+                            <p class="setTargetTxt">SET TARGETS</p>
+                            <div class="EachTargetLines">
+                                <p>TARGET WEIGHT</p><input type="number" id="weightTarget" placeholder="Lbs" class="targetInputField">
+                            </div>
+                            <div class="EachTargetLines">
+                                <p>STARTING WEIGHT</p><input type="number" id="StartingWeight" placeholder="Lbs" class="targetInputField">
+                            </div>
+                            <div class="EachTargetLines">
+                                <p>DAILY CALORIE TARGET</p><input type="number" id="dailyCalorieTarget" placeholder="Cal" class="targetInputField">
+                            </div>
+                            <div class="EachTargetLines">
+                                <p>DAILY PROTEIN TARGET</p><input type="number" id="dailyProteinTarget" placeholder="Grams" class="targetInputField">
+                            </div>
+                            <div class="EachTargetLines">
+                                <p>TRACKING DURATION</p><input type="number" id="weekTarget" placeholder="Weeks" class="targetInputField">
+                            </div>
+                            <div class="justCurrentWeight EachTargetLines">
+                                <p>CURRENT WEIGHT</p><input type="number" id="currentWeight" placeholder="Lbs" class="targetInputField">
+                            </div>
+                            <div  class="updateButtonCont">
+                                <button id="submitGoals" class="updateButton">ENTER</button>
+                            </div>
+
+                            <div class="resetStartDateCont">
+                                RESET TRACKING START DATE TO TODAY?<button id="showResetBtn" class="resetTrgtYesBtn">YES</button> <button id="resetGoalStart" class="resetGoaldate hidden">CONFIRM</button>
+                            </div>
+                        </div>
+                    </div> 
+
+<!-- ======================================== set goals popup ends ======================================== -->
+          
+
+
+            
+ 
+
+<!-- ------------------------------------------------------------------------------------------------------- -->
+<!--|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-->
+<!-- ------------------------------------------------------------------------------------------------------- -->
+
+
+
+    <script src="data.js" type="module"></script>
+</body>
+</html>
