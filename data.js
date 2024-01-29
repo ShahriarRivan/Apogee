@@ -41,6 +41,7 @@ let ProgressYesterdayCal=0;
 let ProgressYesterdayPro=0;
 let previousUpdatedWeight=0;
 let UserId;
+let editingYesterday;
 let userGoals = { dailyCalorieTarget: 0, dailyProteinTarget: 0 };
 let userWeightGoals = { weightTarget: 0};
 updateDateTime(); // Initialize the date and time display
@@ -583,7 +584,6 @@ document.getElementById('foodItemDropdown').addEventListener('change', function(
 });
 
 
-
 // Add food consumption to the database
 function addFoodConsumption() // Mid
 {
@@ -602,14 +602,31 @@ function addFoodConsumption() // Mid
     const foodData = foodItems[selectedFood];
     const calories = amount * foodData.caloriesPerGram;
     const protein = amount * foodData.proteinPerGram;
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yesterdayStr2 = formatDate(yesterday);
+    // console.log(editingYesterday);
 
-    const foodLogRef = ref(db, UserId + `/foodLog/${DBnowDateYMD}/${selectedFood}`);
-    onValue(foodLogRef, (snapshot) => {
+    if(editingYesterday==1)
+    {
+        const foodLogRef = ref(db, UserId + `/foodLog/${yesterdayStr2}/${selectedFood}`);
+        onValue(foodLogRef, (snapshot) => {
         const data = snapshot.val() || { totalCalories: 0, totalProtein: 0 };
         data.totalCalories += calories;
         data.totalProtein += protein;
         set(foodLogRef, data);
-    }, { onlyOnce: true });
+        }, { onlyOnce: true });
+    }
+    else
+    {
+        const foodLogRef = ref(db, UserId + `/foodLog/${DBnowDateYMD}/${selectedFood}`);
+        onValue(foodLogRef, (snapshot) => {
+        const data = snapshot.val() || { totalCalories: 0, totalProtein: 0 };
+        data.totalCalories += calories;
+        data.totalProtein += protein;
+        set(foodLogRef, data);
+        }, { onlyOnce: true });
+    }
 
     document.getElementById('foodAmount').value = '';
     document.getElementById('foodItemDropdown').selectedIndex = 0;
@@ -1447,6 +1464,60 @@ function updateProgressBarP(barId, value)
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.getElementById('yesterdayChartId').addEventListener('click', function() //click the chart warning popus up
+{
+    document.getElementById("warningPopupId").style.display = "flex";
+    document.getElementById('warningPopupId').classList.add('opa');
+});
+
+
+document.getElementById('hideWarningPop').addEventListener('click', function() //no button in warning-dismisses warning
+{
+    document.getElementById("warningPopupId").style.display = "none";
+    document.getElementById('warningPopupId').classList.remove('opa');
+});
+
+
+
+document.getElementById('editYesId').addEventListener('click', function() //yes button in warning-sets editing mode to 1, dismisses warning and enables edit popup
+{
+   
+    document.getElementById('topSec3InputSecId').style.zIndex = '3';
+    editingYesterday = 1;
+    document.getElementById("warningPopupId").style.display = "none";
+    document.getElementById("editYesIdPop").style.display = "flex";
+    
+});
+
+document.getElementById('yesterdayEditDoneBt').addEventListener('click', function() //done button dismisses edit mode popup
+{
+    editingYesterday = 0;
+    document.getElementById('topSec3InputSecId').style.zIndex = '0';
+    document.getElementById("editYesIdPop").style.display = "none";
+});
 
 
 
