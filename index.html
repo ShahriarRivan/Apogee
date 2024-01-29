@@ -54,11 +54,19 @@
             <button class="switchBtn" id="signupLoginCardToggle">SIGNUP</button>
         </div>
     </div>
+    <span class="copyright">&copy; Shahriar Rivan 2024.</span>
 </div>
+
+
+
 
 <div class="landingPageBiggerScreen">
 
 </div>
+
+
+
+
 
 <div id="loggedinCont" class="content-container hidden">
     <div class="todayViewMainSection">
@@ -135,7 +143,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="topSec2YesterdayChart">
+                <div class="topSec2YesterdayChart" id="yesterdayChartId"> <!-- ============================================================================ -->
                     <div class="todayNdYesTxt">
                         YESTERDAY
                     </div>
@@ -158,9 +166,9 @@
 
                 </div>
             </div>
-            
+   
             <div class="topSec3">
-                <div class="topSec3InputSec">
+                <div class="topSec3InputSec" id="topSec3InputSecId">
                     <select id="foodItemDropdown" class="foodDropdown">
                         <option value="">SELECT ITEM</option>
 
@@ -172,6 +180,24 @@
             </div>
     </div>
 
+<!-- ============================================================================================================================================= -->
+    <div class="warningPopup" id="warningPopupId" style="display: none;">
+        <p style="margin: 2px 2px 6px 2px;">EDIT YESTERDAY'S LOG?</p>
+        <div class="warningBtCont">
+            <button class="editYes" id="editYesId">CONFIRM</button>
+            <button id="hideWarningPop" >DISMISS</button>
+        </div>
+    </div>
+
+
+    <div class="editYesPop" id="editYesIdPop" style="display: none;">
+        <p class="topWarningTxt">
+            YOU ARE NOW IN YESTERDAY'S LOG
+        </p>
+        <button id="yesterdayEditDoneBt">DONE</button>
+    </div>
+    
+<!-- ============================================================================================================================================= -->       
 
     <div class="OtherServicesMidButtonSection" id="midButtonsCont">
         <div class="midButtonsCont">
