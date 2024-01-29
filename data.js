@@ -1519,9 +1519,3 @@ document.getElementById('yesterdayEditDoneBt').addEventListener('click', functio
     document.getElementById("editYesIdPop").style.display = "none";
 });
 
-
-
-
-
-
-
