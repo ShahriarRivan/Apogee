@@ -81,7 +81,8 @@ h1
 
     body 
     {
-        height: 89vh;
+/*         89 */
+        height: 86vh;
     }
     
     .content-container 
