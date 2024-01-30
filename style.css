@@ -81,8 +81,29 @@ h1
 
     body 
     {
-/*         89 */
+        /* 89 */
         height: 86vh;
+    }
+    @media screen and (max-height: 900px)
+    {
+        body 
+        {
+            height: 85vh;
+        }
+    }
+    @media screen and (max-height: 850px)
+    {
+        body 
+        {
+            height: 84vh;
+        }
+    }
+    @media screen and (max-height: 700px)
+    {
+        body 
+        {
+            height: 83vh;
+        }
     }
     
     .content-container 
