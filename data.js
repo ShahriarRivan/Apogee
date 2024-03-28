@@ -150,6 +150,9 @@ onAuthStateChanged(auth, (user) => {
         const name = snapshot.val();
         document.getElementById('userName').textContent = name ? name.toUpperCase() : 'NAME NOT SET';
         });
+
+
+        fetchCategoriesAndItems(UserId);
     } 
     else 
     {
@@ -270,7 +273,56 @@ function countWeeksSinceStarted() //Top
     {
         document.getElementById('weekSS').textContent = weeksSinceStarted;
     }
+    
    
+}
+
+
+//for the workout count
+function calculateDayOfWeek() 
+{
+    var nthDay = (daysSinceStarted % 7)+1;
+    var nthDayCountDown = 7 - nthDay;
+    var thisWeekCurrentValue;
+
+    const lastUpdatedRef = ref(db, UserId + '/UserGoals/workout/lastUpdated');
+    const thisWeekRef = ref(db, UserId + '/UserGoals/workout/thisWeek');
+
+    get(thisWeekRef).then((snapshot) => 
+    {
+        if (snapshot.exists()) 
+        {
+            thisWeekCurrentValue = snapshot.val();
+            document.getElementById('workoutDaysIwent').textContent = thisWeekCurrentValue;
+        } 
+
+        get(lastUpdatedRef).then((snapshot) => 
+        {
+            if (snapshot.val() !== DBnowDateYMD) 
+            {
+                if(nthDay==1 && thisWeekCurrentValue!=0)
+                {
+                    set(thisWeekRef, 0);
+                }
+            }
+        });
+
+    });
+    
+    
+
+    if (!isNaN(nthDay))
+    {
+        // if(nthDay==0)
+        document.getElementById('workoutDays').textContent = nthDay;
+        document.getElementById('workoutCountDown').textContent = nthDayCountDown;
+
+        // if(nthDay==1)
+        // {
+
+        // }
+        
+    }
 }
 
 // function to show the weight progress percentage on the FE
@@ -324,6 +376,59 @@ document.getElementById('openSetGoals').addEventListener('click', function()
         popup.style.top = '-1px'; // End position
     }, 10); // Small delay
 });
+
+
+  
+
+
+
+
+  document.getElementById('yesButton').addEventListener('click', function() {
+    console.log(DBnowDateYMD);
+
+    const lastUpdatedRef = ref(db, UserId + '/UserGoals/workout/lastUpdated');
+    get(lastUpdatedRef).then((snapshot) => {
+        // Check if lastUpdated is not today
+        if (!snapshot.exists() || snapshot.val() !== DBnowDateYMD) {
+            // Update lastUpdated to today
+            set(lastUpdatedRef, DBnowDateYMD).then(() => {
+                console.log("lastUpdated set to today.");
+
+                // After successfully setting lastUpdated, increment thisWeek and total
+                const thisWeekRef = ref(db, UserId + '/UserGoals/workout/thisWeek');
+                get(thisWeekRef).then((snapshot) => {
+                    const thisWeekValue = snapshot.exists() ? snapshot.val() + 1 : 1;
+                    set(thisWeekRef, thisWeekValue).then(() => console.log("thisWeek incremented."));
+                });
+
+
+
+
+
+                const totalRef = ref(db, UserId + '/UserGoals/workout/total');
+                get(totalRef).then((snapshot) => {
+                    const totalValue = snapshot.exists() ? snapshot.val() + 1 : 1;
+                    set(totalRef, totalValue).then(() => console.log("total incremented."));
+                });
+
+
+            }).catch((error) => console.error("Error updating lastUpdated:", error));
+        } else {
+            console.log("lastUpdated is already set to today. No action taken.");
+        }
+    }).catch((error) => {
+        console.error("Error fetching lastUpdated:", error);
+    });
+});
+
+
+
+
+
+
+
+
+
 
 
 
@@ -402,6 +507,7 @@ document.getElementById('showResetBtn').addEventListener('click', function() {
 document.getElementById('resetGoalStart').addEventListener('click', function() 
 {
     setStartDateForToday();
+    resetWorkouts();
     var showResetBtn = document.getElementById('showResetBtn');
     showResetBtn.textContent = 'YES';
     
@@ -413,6 +519,15 @@ function setStartDateForToday()
     const userGoalsRef = ref(db, UserId + '/UserGoals/transformationStartDate');
     const transStartDate = DBnowDateYMD;
     set(userGoalsRef, transStartDate);
+}
+function resetWorkouts()
+{
+    const lastUpdatedWorkoutRef = ref(db, UserId + '/UserGoals/workout/lastUpdated');
+    const thisWeeksWorkoutRef = ref(db, UserId + '/UserGoals/workout/thisWeek');
+    const totalWorkoutRef = ref(db, UserId + '/UserGoals/workout/total');
+    set(thisWeeksWorkoutRef, 0);
+    set(totalWorkoutRef, 0);
+    set(lastUpdatedWorkoutRef, 0);
 }
 
 // Function to cancel setting goals popup
@@ -439,7 +554,11 @@ document.getElementById('cancelGoals').addEventListener('click', function()
 //|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 //================================================================================================== T O P    E N D ==================================================================================================
 
+//worked out? popup and buttons
 
+  
+
+  
 
 
 
@@ -909,15 +1028,60 @@ function updateProgressBars() {
     }
 
 
-    calorieProgress.style.height = Math.min(caloriePercentage, 100) + '%';
-    // calorieProgress.textContent = Math.min(caloriePercentage, 100).toFixed(2) + '%';
 
-    proteinProgress.style.height = Math.min(proteinPercentage, 100) + '%';
-    // proteinProgress.textContent = + ((ProgressTodayPro / userGoals.dailyProteinTarget) * 100).toFixed(2) + '%';
+    if(caloriePercentage==0)
+    {
+        calorieProgress.style.height = Math.min(100, 100) + '%';
+        document.getElementById('calorieProgress').style.backgroundImage = "url('images/StripesGrayVertical.jpg')";
+        document.getElementById('calorieProgress').style.backgroundSize = "cover";
+    }
+    else
+    {
+        calorieProgress.style.height = Math.min(caloriePercentage, 100) + '%';
+        document.getElementById('calorieProgress').style.background = 'linear-gradient(rgb(112 236 255) 10%, rgb(112 1 255) 70%)';
+    }
 
-    YstrdcalorieProgress.style.height = Math.min(yescaloriePercentage, 100) + '%';
 
-    YstrdproteinProgress.style.height = Math.min(yesproteinPercentage, 100) + '%';
+    if(proteinPercentage==0)
+    {
+        proteinProgress.style.height = Math.min(100, 100) + '%';
+        document.getElementById('proteinProgress').style.backgroundImage = "url('images/StripesGrayVertical.jpg')";
+        document.getElementById('proteinProgress').style.backgroundSize = "cover";
+    }
+    else
+    {
+        proteinProgress.style.height = Math.min(proteinPercentage, 100) + '%';
+        document.getElementById('proteinProgress').style.background = 'linear-gradient(rgb(200 41 253) 10%, rgb(254 1 3) 70%)';
+    }
+
+
+    if(yescaloriePercentage==0)
+    {
+        YstrdcalorieProgress.style.height = Math.min(100, 100) + '%';
+        document.getElementById('YstrdcalorieProgress').style.backgroundImage = "url('images/StripesGrayVertical.jpg')";
+        document.getElementById('YstrdcalorieProgress').style.backgroundSize = "cover"; 
+    }
+    else
+    {
+        YstrdcalorieProgress.style.height = Math.min(yescaloriePercentage, 100) + '%';
+        document.getElementById('YstrdcalorieProgress').style.background = 'linear-gradient(rgb(86 248 115) 10%, rgb(10 146 238) 70%)';
+    }
+
+
+    if(yesproteinPercentage==0)
+    {
+        YstrdproteinProgress.style.height = Math.min(100, 100) + '%';
+        // document.getElementById('YstrdproteinProgress').style.setProperty('background', 'linear-gradient(180deg, #4f4f4f 100%, #3f3f3f 10%)', 'important');
+        document.getElementById('YstrdproteinProgress').style.backgroundImage = "url('images/StripesGrayVertical.jpg')";
+        document.getElementById('YstrdproteinProgress').style.backgroundSize = "cover";
+
+    }
+    else
+    {
+        YstrdproteinProgress.style.height = Math.min(yesproteinPercentage, 100) + '%';
+        document.getElementById('YstrdproteinProgress').style.background = 'linear-gradient(rgb(236 243 0) 10%, rgb(253 63 0) 70%)';
+    }
+    
 }
 
 
@@ -1001,6 +1165,7 @@ function updateStats()
     updateProgressBars();
     updateWeightData();
     setWtChangeSinceDayOne();
+   
     // setWeekProgress();
 }
 //===================================================================================================== M I D    E N D======================================================================================================
@@ -1232,6 +1397,7 @@ document.getElementById('addFood').addEventListener('click', addFoodConsumption)
 document.getElementById('addFood').addEventListener('click', updateStats);
 setInterval(countDaysSinceStarted, 1000);
 setInterval(countWeeksSinceStarted, 1000);
+setInterval(calculateDayOfWeek, 1000);
 setInterval(GetAverageFromStartDate, 1000);
 setInterval(GetAverageFromLast6Days, 1000);
 setInterval(setProgress, 1000);
@@ -1320,17 +1486,35 @@ document.addEventListener('click', function(event) {
                 const theme = snapshot.val();
                 const contentContainer = document.querySelector('.content-container');
                 const themeChangeDiv = document.querySelector('.themeChange');
+                const themeChangeforOthers = document.querySelector('.OtherServicesBottomViewSection');
+                const weeklyChartBorder = document.querySelector('.chartNutriCHILDTop');
+                const backgroundColor = document.querySelector('.topBackground');
+                const bdy = document.querySelector('.bdy');
+                const slideButton = document.querySelector('.OtherServicesMidButtonSection');
 
-                if (theme === 'DARK') {
-                    contentContainer.style.backgroundColor = 'black';
+                if (theme === 'DARK') 
+                {
+                    contentContainer.style.backgroundColor = 'rgba(63, 63, 63, 1)';
                     themeChangeDiv.textContent = 'DARK';
                     themeChangeDiv.style.color = 'white';
                     themeChangeDiv.style.backgroundColor = 'black';
-                } else {
-                    contentContainer.style.backgroundColor = 'rgb(180 180 180)';
+                    themeChangeforOthers.style.background = 'linear-gradient(127deg, rgb(0 0 0) 30%, rgb(0 0 0) 85%)';
+                    weeklyChartBorder.style.borderColor = '#dcff00';
+                    backgroundColor.style.background = 'linear-gradient(182deg, #3e3e3e, rgb(0 0 0))';
+                    bdy.style.backgroundColor = 'rgb(63 63 63)';
+                    slideButton.style.backgroundColor = '#272727';
+                } 
+                else 
+                {
+                    contentContainer.style.backgroundColor = 'white';
                     themeChangeDiv.textContent = 'LIGHT';
                     themeChangeDiv.style.color = 'black';
                     themeChangeDiv.style.backgroundColor = 'white';
+                    themeChangeforOthers.style.background = 'linear-gradient(127deg, rgb(175 0 0) 30%, rgba(255, 107, 0, 1) 85%)';
+                    weeklyChartBorder.style.borderColor = 'black';
+                    backgroundColor.style.background = 'linear-gradient(182deg, #ffffff, #ffffff)';
+                    bdy.style.backgroundColor = 'white';
+                    slideButton.style.backgroundColor = 'black';
                 }
             });
         }
@@ -1521,7 +1705,292 @@ document.getElementById('yesterdayEditDoneBt').addEventListener('click', functio
 
 
 
+// document.addEventListener('DOMContentLoaded', function() {
+// document.getElementById('WorkoutButton').addEventListener('click', function() {
+//     var popup = document.getElementById('workBaalerID');
+//     popup.classList.remove('hiddenNew'); // Show the popup
+//   });
+  
+// });
+
+//   document.getElementById('cancelButton').addEventListener('click', function() {
+//     var popup = document.getElementById('workBaalerID');
+//     popup.classList.add('hiddenNew'); // Hide the popup
+//     console.log("ikkh");
+//   });
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+document.getElementById('addCategoryBtn').addEventListener('click', function() {
+    const categoryName = prompt("Enter category name:");
+    if (categoryName) 
+    {
+        createCategory(categoryName);
+
+         //add catagories in firebase
+        createCategoryInFirebase(UserId, categoryName);
+    }
+});
+
+function createCategory(name) {
+    const categoriesContainer = document.getElementById('categoriesContainer');
+    const catButtonsContainer = document.getElementById('allCatagoryButtons');
+    const content3 = document.getElementById('content3');
+    const eachButtonsDiv = document.createElement('div');
+    eachButtonsDiv.className = 'eachButtonsDiv';
+
+    // Create category button
+    const categoryBtn = document.createElement('button');
+    categoryBtn.textContent = name;
+    categoryBtn.className = 'catagButtons';
+    categoryBtn.addEventListener('click', function() {
+        // Hide all items containers
+        document.querySelectorAll('.itemsContainer').forEach(container => {
+            container.classList.add('hidden');
+        });
+        
+        // Show only this category's items container
+        const itemsContainer = document.getElementById(`itemsContainer_${name}`);
+        if (itemsContainer) {
+            itemsContainer.classList.remove('hidden');
+        }
+
+        document.querySelectorAll('.catagButtons.active').forEach(activeButton => {
+            activeButton.classList.remove('active');
+        });
+
+        // Toggle the .active class on the clicked button
+        this.classList.add('active');
+
+
+
+    });
+    eachButtonsDiv.appendChild(categoryBtn);
+
+    // Create container for items
+    const itemsContainer = document.createElement('div');
+    itemsContainer.id = `itemsContainer_${name}`;
+    itemsContainer.classList.add('hidden', 'itemsContainer');
+    
+
+    // Add button inside items container
+    const addItemBtn = document.createElement('button');
+    addItemBtn.textContent = "Add Item";
+    addItemBtn.classList.add('addItemBtn');
+    addItemBtn.style.display = 'none'; // Initially hidden unless in edit mode
+    addItemBtn.addEventListener('click', function() {
+        addItem(name, "New Item", true); // Prompt inside addItem handles naming
+    });
+    itemsContainer.appendChild(addItemBtn);
+
+    // Add delete category button
+    const deleteCategoryBtn = document.createElement('button');
+    deleteCategoryBtn.textContent = "-";
+    deleteCategoryBtn.classList.add('deleteCategoryBtn');
+    deleteCategoryBtn.style.display = 'none'; // Initially hidden unless in edit mode
+    deleteCategoryBtn.addEventListener('click', function() {
+        // Confirm before deletion
+        if (confirm(`Delete category "${name}" and all its items?`)) {
+            catButtonsContainer.removeChild(eachButtonsDiv);
+            categoriesContainer.removeChild(itemsContainer);
+            // Optionally, remove category from Firebase
+            console.log("inside click delete cat");
+            removeCategoryFromFirebase(UserId, name);
+        }
+    });
+
+   
+
+
+
+    // Append elements
+    // catButtonsContainer.insertBefore(deleteCategoryBtn, catButtonsContainer.firstChild); // Ensure delete is at the top or adjust as needed
+    // catButtonsContainer.insertBefore(categoryBtn, catButtonsContainer.firstChild);
+    eachButtonsDiv.appendChild(deleteCategoryBtn);
+    categoriesContainer.appendChild(itemsContainer);
+    catButtonsContainer.appendChild(eachButtonsDiv);
+}
+
+function removeCategoryFromFirebase(userId, categoryName) 
+{
+    console.log("inside func delete cat 1");
+    const categoryRef = ref(db, `${userId}/workoutRoutine/${categoryName}`);
+    remove(categoryRef, true);
+    console.log("inside func delete cat 2");
+}
+
+
+function createCategoryInFirebase(userId, categoryName) 
+{
+    const dbRef = ref(db, `${userId}/workoutRoutine/${categoryName}`);
+    set(dbRef, true); 
+}
+
+
+
+
+
+
+
+function addItem(categoryName, itemName, addToFirebase) {
+    const itemsContainer = document.getElementById(`itemsContainer_${categoryName}`);
+    if(addToFirebase==true)
+    {
+        itemName = prompt("Enter item name:");
+    }
+    // Limit to 15 items
+    if (itemsContainer.querySelectorAll('.item').length < 12) 
+    {
+        const itemDiv = document.createElement('div');
+        itemDiv.textContent = itemName;
+        itemDiv.className = 'item';
+
+        // Delete button for item
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = '-';
+        deleteBtn.classList.add('deleteItemBtn'); // Add class for easy selection
+        deleteBtn.style.display = 'none'; // Initially hidden unless in edit mode
+        deleteBtn.addEventListener('click', function() {
+            // Remove item from Firebase
+            removeItemFromFirebase(UserId, categoryName, itemName);
+            itemsContainer.removeChild(itemDiv);
+        });
+        itemDiv.appendChild(deleteBtn); //
+
+        itemsContainer.appendChild(itemDiv);
+        
+        // Add item to Firebase if needed
+        if (addToFirebase && (itemName != null || itemName.trim() != "")) 
+        {
+            addItemToFirebase(UserId, categoryName, itemName);
+        }
+    } 
+    else 
+    {
+        alert("Maximum of 12 items reached.");
+    }
+}
+
+function addItemToFirebase(userId, categoryName, itemName) {
+    const itemRef = ref(db, `${userId}/workoutRoutine/${categoryName}/items/${itemName}`);
+    set(itemRef, true); // Or use an object with more details if necessary
+}
+
+function removeItemFromFirebase(userId, categoryName, itemName) {
+    const itemRef = ref(db, `${userId}/workoutRoutine/${categoryName}/items/${itemName}`);
+    remove(itemRef);
+}
+
+
+function fetchCategoriesAndItems(userId) {
+    const categoriesRef = ref(db, `${userId}/workoutRoutine`);
+    // let catagoryCount=0;
+
+    get(categoriesRef).then((snapshot) => {
+        if (snapshot.exists()) {
+            
+            const categories = snapshot.val();
+            Object.keys(categories).forEach((categoryName) => {
+                // Create category button and items container for each category
+                createCategory(categoryName);
+                // catagoryCount++;
+               
+                // Now fetch and display items for this category
+                const items = categories[categoryName].items;
+                if (items) {
+                    Object.keys(items).forEach((itemName) => {
+                        // Add each item to its category's container
+                        addItem(categoryName, itemName, false); // Passing false to prevent adding to Firebase again
+                    });
+                }
+            });
+            // console.log(catagoryCount);
+        }
+    }).catch((error) => {
+        console.error("Error fetching categories and items:", error);
+    });
+}
+
+
+
+
+
+
+
+let isEditMode = false; // Tracks whether edit mode is active
+
+document.getElementById('editModeToggle').addEventListener('click', function() {
+    isEditMode = !isEditMode; // Toggle the edit mode state
+    
+    // Update button text based on the state
+    this.textContent = isEditMode ? 'Done' : 'Edit';
+    
+    // Show or hide relevant buttons based on the edit mode state
+    toggleEditButtons(isEditMode);
+});
+
+function toggleEditButtons(show) {
+    // Toggle visibility of the "Add Category" button
+    document.getElementById('addCategoryBtn').style.display = show ? 'flex' : 'none';
+    
+    // Query and toggle all "Add Item" and delete buttons within categories
+    document.querySelectorAll('.addItemBtn, .deleteCategoryBtn, .deleteItemBtn').forEach(button => {
+        button.style.display = show ? 'flex' : 'none';
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+document.getElementById("calculateBtn").addEventListener("click", function() {
+    // Inputs
+    var age = parseInt(document.getElementById("age").value);
+    var gender = document.querySelector('input[name="gender"]:checked').value;
+    var feet = parseInt(document.getElementById("feet").value);
+    var inches = parseInt(document.getElementById("inches").value);
+    var pounds = parseInt(document.getElementById("pounds").value);
+    var exercise = document.getElementById("exercise").value;
+
+    // Convert height to cm and weight to kg
+    var heightInCm = (feet * 30.48) + (inches * 2.54);
+    var weightInKg = pounds * 0.453592;
+
+    // Calculate BMR
+    var bmr = gender === "male" ?
+        (10 * weightInKg) + (6.25 * heightInCm) - (5 * age) + 5 :
+        (10 * weightInKg) + (6.25 * heightInCm) - (5 * age) - 161;
+
+    // Assuming maintenance calories based on the active level and the given example
+    var maintenanceCalories = 2526; // This value is an example; replace with a formula if needed
+
+    // Calculate calorie intake for weight loss by applying percentage reductions
+    var mildWeightLoss = maintenanceCalories * 0.9; // 90% for 0.5 lb/week
+    var weightLoss = maintenanceCalories * 0.8; // 80% for 1 lb/week
+    var extremeWeightLoss = maintenanceCalories * 0.6; // 60% for 2 lbs/week
+
+    // Display results
+    document.getElementById("bmrResult").textContent = "BMR: " + bmr.toFixed(2) + " calories/day";
+    document.getElementById("maintenanceCalories").textContent = "Maintain weight: " + maintenanceCalories + " calories/day";
+    document.getElementById("mildWeightLoss").textContent = "Mild weight loss (0.5 lb/week): " + mildWeightLoss.toFixed(2) + " calories/day";
+    document.getElementById("weightLoss").textContent = "Weight loss (1 lb/week): " + weightLoss.toFixed(2) + " calories/day";
+    document.getElementById("extremeWeightLoss").textContent = "Extreme weight loss (2 lbs/week): " + extremeWeightLoss.toFixed(2) + " calories/day";
+});
