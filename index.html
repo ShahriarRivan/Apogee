@@ -20,11 +20,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Homenaje&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Alumni+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,200;6..12,300;6..12,400;6..12,500;6..12,600;6..12,700;6..12,800;6..12,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
 <!-- 640h, 560h, 280w, 320w -->
     <link rel="icon" href="data:,">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="bdy">
 <div id="loginCont" class="login-container hidden">
     <div class="logoNameCont">
         <img class="whiteLogo" src="images/whiteLogo.png" alt="">
@@ -80,7 +81,11 @@
                 </div>
             </div>
             <div class="sec2">
-
+                <div class="apogeeTxtLg">
+                    <p>
+                        ABOUT
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -91,8 +96,10 @@
 
 
 <div id="loggedinCont" class="content-container hidden">
+    
+    <div class="topBackground">
+   
     <div class="todayViewMainSection">
-
 
 <!-- magane food popup========================================== -->
                         <div id="addFoodForm" class="addFoodPopup hidden">
@@ -145,42 +152,62 @@
 
             <div class="topSec2">
                 <div class="topSec2TodayChart">
-                    <div class="todayNdYesTxt">
+                    <!-- <div class="todayNdYesTxt">
                         TODAY
-                    </div>
+                    </div> -->
                     <div class="chartCont">
                         <div class="barContainer">
-                            <span id="todaysCalories">--</span>
+                            <!-- <span id="todaysCalories">--</span> -->
                             <div class="theActualProgressBar">
                                 <div class="progress" id="calorieProgress"></div>
+                                <span id="todaysCalories">--</span>
                             </div>
                             CALORIE
                         </div>
                         <div class="barContainer">
-                            <span id="todaysProtein">--</span>
+                            <!-- <span id="todaysProtein">--</span> -->
                             <div class="theActualProgressBar">
                                 <div class="progress" id="proteinProgress"></div>
+                                <span id="todaysProtein">--</span>
                             </div>
                             PROTEIN
                         </div>
                     </div>
                 </div>
-                <div class="topSec2YesterdayChart" id="yesterdayChartId"> <!-- ============================================================================ -->
-                    <div class="todayNdYesTxt">
-                        YESTERDAY
+                <div class="workoutLog">
+                    <div id="WorkoutButton" class="workoutBtn">
+                        <!-- <div id="workBaalerID" class="workBaalerclass  hiddenNew">
+                            <div id="workoputConfirmpopID" class="workoputConfirmpopCls">
+                                <p>Are you sure?</p>
+                                <button id="yesButton">Yes</button>
+                                <button id="cancelButton">Cancel</button>
+                            </div>
+                        </div> -->
+                        <span class="workOutTxt">WROKED OUT (days)</span><span class="workoutCountTxt"><span id="workoutDaysIwent">-</span>/<span id="workoutDays">-</span></span>
+                    </div>  
+                    <div class="cycleCount">
+                        <span class="workOutTxt">Cycle Countdown</span><span class="cycleCountDown" id="workoutCountDown">-</span>
                     </div>
+
+                </div>
+                <div class="topSec2YesterdayChart" id="yesterdayChartId"> <!-- ============================================================================ -->
+                    <!-- <div class="todayNdYesTxt">
+                        YESTERDAY
+                    </div> -->
                     <div class="chartCont">
                         <div class="barContainer">
-                            <span id="yesterdaysCalories">--</span>
+                            <!-- <span id="yesterdaysCalories">--</span> -->
                             <div class="theActualProgressBar">
                                 <div class="progress" id="YstrdcalorieProgress"></div>
+                                <span id="yesterdaysCalories">--</span>
                             </div>
                             CALORIE
                         </div>
                         <div class="barContainer">
-                            <span id="yesterdaysProtein">--</span>
+                            <!-- <span id="yesterdaysProtein">--</span> -->
                             <div class="theActualProgressBar">
                                 <div class="progress" id="YstrdproteinProgress"></div>
+                                <span id="yesterdaysProtein">--</span>
                             </div>
                             PROTEIN
                         </div>
@@ -189,7 +216,7 @@
                 </div>
             </div>
    
-            <div class="topSec3">
+            <!-- <div class="topSec3">
                 <div class="topSec3InputSec" id="topSec3InputSecId">
                     <select id="foodItemDropdown" class="foodDropdown">
                         <option value="">SELECT ITEM</option>
@@ -199,7 +226,7 @@
                     <input type="number" class="FoodAmountInput" placeholder="GRAMS" id="foodAmount">
                     <button id="addFood" class="AddBtn" >ADD</button>
                 </div>
-            </div>
+            </div> -->
     </div>
 
 <!-- ============================================================================================================================================= -->
@@ -221,18 +248,66 @@
     
 <!-- ============================================================================================================================================= -->       
 
-    <div class="OtherServicesMidButtonSection" id="midButtonsCont">
+    <!-- <div class="OtherServicesMidButtonSection" id="midButtonsCont">
         <div class="midButtonsCont">
             <div class="buttonHighlight"></div> 
             <div class="midButton" id="button1">BMR CALC</div>
             <div class="midButton" id="button2">STATS</div>
             <div class="midButton" id="button3">DATA</div>
         </div>
-    </div>
+    </div> -->
 
 
     <div id="canv" class="OtherServicesBottomViewSection">
-            <div id="content1" class="content">Content for BMR CALC<br>coming soon</div>
+            <div id="content1" class="content">
+                <div class="calculatorBorder">
+                    <div class="calcInputs1">
+                        <div class="genderCont">
+                            <span class="labelTxt"> Gender</span>
+                               <span class="genderRadios">
+                                    <input type="radio" name="gender" value="male" checked> Male
+                                    <input type="radio" name="gender" value="female"> Female
+                               </span>
+                        </div>
+                        <div class="ageCont">
+                            <span class="labelTxt"> Age</span> <input type="number" id="age">
+                        </div>
+                    </div>
+                    <div class="calcInputs2">
+                       <div class="heightCont">
+                            <span class="labelTxt heightTxt"> Height</span> <input type="number" id="feet" placeholder="Feet"> <input type="number" id="inches" placeholder="Inches">
+                       </div>
+                       <div class="weightCont">
+                        <span class="labelTxt"> Weight</span> <input type="number" id="pounds" placeholder="Pounds">
+                       </div>
+                    </div>
+                    <div class="calcInputs2">
+                        <div class="exerciseCont">
+                            <span class="labelTxt"> Exercise</span>
+                            <select id="exercise">
+                                <option value="1">Little to no exercise</option>
+                                <option value="2">Light exercise (1-3 days per week)</option>
+                                <option value="3">Moderate exercise (3-5 days per week)</option>
+                                <option value="4">Active (daily exercise or intense 3-4 days a week)</option>
+                                <option value="5">Very active (intense exercise 6-7 days a week)</option>
+                            </select>
+                        </div>
+                        <div class="calculateBtnCont">
+                            <button id="calculateBtn">CALCULATE</button>
+                        </div>
+                    </div>
+                
+                    
+                </div>
+
+                <div class="calcResultsCont">
+                    <p id="bmrResult">This Calorie Calculator is based on several equations, and the results of the calculator are based on an estimated average. The Harris-Benedict Equation was one of the earliest equations used to calculate basal metabolic rate (BMR), which is the amount of energy expended per day at rest. It was revised in 1984 to be more accurate and was used up until 1990, when the Mifflin-St Jeor Equation was introduced. </p>
+                    <p id="maintenanceCalories"></p>
+                    <p id="mildWeightLoss"></p>
+                    <p id="weightLoss"></p>                
+                    <p id="extremeWeightLoss"></p>
+                </div>
+            </div>
 
 
 
@@ -340,9 +415,52 @@
             </div>
 
 
-            <div id="content3" class="content hidden">Content for DATA<br>coming soon</div>
+            <div id="content3" class="content hidden">
+                
+                <div id="categoriesContainer" class="GymRoutineContainer">
+                    <div id="allCatagoryButtons" class="categoryButtDiv">
+                        <div class="catButtCont">
+                            <button id="editModeToggle">Edit</button>
+                            <button id="addCategoryBtn" style="display: none;">Add Routine</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+
+
+            <div class="OtherServicesMidButtonSection" id="midButtonsCont">
+                <div class="midButtonsCont">
+                    <div class="buttonHighlight"></div> 
+                    <div class="midButton" id="button1">BMR CALC</div>
+                    <div class="midButton" id="button2">DASH</div>
+                    <div class="midButton" id="button3">GYM ROUTINE</div>
+                </div>
+            </div>
     </div>
+    
+
+
+    
+</div>
+<div class="topSec3">
+        <div class="topSec3InputSec" id="topSec3InputSecId">
+            <select id="foodItemDropdown" class="foodDropdown">
+                <option value="">SELECT ITEM</option>
+
+                 <option value="addNewItem">Add New Item</option>
+            </select>
+            <input type="number" class="FoodAmountInput" placeholder="GRAMS" id="foodAmount">
+            <button id="addFood" class="AddBtn" >ADD</button>
+        </div>
+    </div>
+
+
+
+
+
+
+
 
 </div> <!-- main container ends -->
 
@@ -377,6 +495,11 @@
                             <div class="justCurrentWeight EachTargetLines">
                                 <p>CURRENT WEIGHT</p><input type="number" id="currentWeight" placeholder="Lbs" class="targetInputField">
                             </div>
+                            <div class="EachTargetLines">
+                                <p>Worked out today?</p>
+                                <button id="yesButton">Yes</button>
+                            </div>
+                          
                             <div  class="updateButtonCont">
                                 <button id="submitGoals" class="updateButton">ENTER</button>
                             </div>
@@ -403,4 +526,3 @@
     <script src="data.js" type="module"></script>
 </body>
 </html>
-
